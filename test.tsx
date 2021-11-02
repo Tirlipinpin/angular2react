@@ -2,7 +2,7 @@ import { auto, element as $, mock, module } from 'angular'
 import 'angular-mocks'
 import * as React from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
-import { angular2react } from '.'
+import { angular2react } from '.';
 
 // Angular component
 
