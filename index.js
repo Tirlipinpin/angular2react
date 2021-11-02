@@ -32,8 +32,12 @@ export function angular2react(
 
   return class extends React.Component {
 
-    state = {
-      didInitialCompile: false
+    constructor(props) {
+      super(props);
+  
+      this.state = {
+        didInitialCompile: false
+      };
     }
 
     UNSAFE_componentWillMount() {
