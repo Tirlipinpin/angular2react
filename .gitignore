@@ -5,5 +5,6 @@ npm-debug.log
 *.js
 *.map
 !karma.conf.js
+!index.js
 !types/lodash.kebabcase.d.ts
 yarn-error.log

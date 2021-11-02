@@ -1,16 +1,7 @@
+import React from 'react'
 import * as angular from 'angular'
-import kebabCase = require('lodash.kebabcase')
+import kebabCase from 'lodash.kebabcase'
 import { $injector as defaultInjector } from 'ngimport'
-import * as React from 'react'
-
-interface Scope<Props> extends angular.IScope {
-  props: Props
-}
-
-interface State<Props> {
-  didInitialCompile: boolean
-  scope?: Scope<Props>
-}
 
 /**
  * Wraps an Angular component in React. Returns a new React component.
@@ -33,15 +24,15 @@ interface State<Props> {
  *   <Bar onChange={...} />
  *   ```
  */
-export function angular2react<Props extends object>(
-  componentName: string,
-  component: angular.IComponentOptions,
+export function angular2react(
+  componentName,
+  component,
   $injector = defaultInjector
-): React.ComponentClass<Props> {
+) {
 
-  return class extends React.Component<Props, State<Props>> {
+  return class extends React.Component {
 
-    state: State<Props> = {
+    state = {
       didInitialCompile: false
     }
 
@@ -58,13 +49,13 @@ export function angular2react<Props extends object>(
       this.state.scope.$destroy()
     }
 
-    shouldComponentUpdate(): boolean {
+    shouldComponentUpdate() {
       return false
     }
 
     // called only once to set up DOM, after componentWillMount
     render() {
-      const bindings: {[key: string]: string} = {}
+      const bindings = {}
       if (component.bindings) {
         for (const binding in component.bindings) {
           bindings[kebabCase(binding)] = `props.${binding}`
@@ -77,7 +68,7 @@ export function angular2react<Props extends object>(
 
     // makes angular aware of changed props
     // if we're not inside a digest cycle, kicks off a digest cycle before setting.
-    UNSAFE_componentWillReceiveProps(props: Props) {
+    UNSAFE_componentWillReceiveProps(props) {
       if (!this.state.scope) {
         return
       }
@@ -85,7 +76,7 @@ export function angular2react<Props extends object>(
       this.digest()
     }
 
-    private compile(element: HTMLElement) {
+    compile(element) {
       if (this.state.didInitialCompile || !this.state.scope) {
         return
       }
@@ -95,7 +86,7 @@ export function angular2react<Props extends object>(
       this.setState({ didInitialCompile: true })
     }
 
-    private digest() {
+    digest() {
       if (!this.state.scope) {
         return
       }
@@ -116,13 +107,13 @@ export function angular2react<Props extends object>(
  * Instead, we use the below ad-hoc proxy to catch writes to non-writable
  * properties in `object`, and log a helpful warning when it happens.
  */
-function writable<T extends object>(object: T): T {
-  const _object = {} as T
+function writable(object) {
+  const _object = {}
   for (const key in object) {
     if (object.hasOwnProperty(key)) {
       Object.defineProperty(_object, key, {
         get() { return object[key] },
-        set(value: any) {
+        set(value) {
           let d = Object.getOwnPropertyDescriptor(object, key)
           if (d && d.writable) {
             return object[key] = value

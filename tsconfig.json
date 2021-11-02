@@ -20,7 +20,7 @@
     "target": "es6"
   },
   "files": [
-    "index.tsx",
+    "index.js",
     "test.tsx"
   ]
 }
