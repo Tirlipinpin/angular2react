@@ -90,7 +90,7 @@ export function angular2react(componentName, component, $injector = defaultInjec
 
     return (
       React.createElement(kebabCase(componentName),
-        { ...bindings, ref: compile }
+        { ...bindings, ref: (ref) => compile = ref }
       )
     )
   }
