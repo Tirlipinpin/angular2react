@@ -1,5 +1,5 @@
 import * as angular from 'angular'
-import kebabCase from 'lodash/kebabcase'
+import kebabCase from 'lodash.kebabcase'
 import * as React from 'react'
 import { $injector as defaultInjector } from 'ngimport'
 
@@ -32,9 +32,13 @@ export function angular2react (
 
   return class Component extends React.Component {
 
-    state = {
-      didInitialCompile: false,
-      scope: Object.assign(this.getInjector().get('$rootScope').$new(true), { props: writable(this.props) }),
+    constructor(props) {
+      super(props)
+
+      this.state = {
+        didInitialCompile: false,
+        scope: Object.assign(this.getInjector().get('$rootScope').$new(true), { props: writable(this.props) }),
+      }
     }
 
     getInjector() {
