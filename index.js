@@ -40,27 +40,21 @@ export function angular2react(componentName, component, $injector = defaultInjec
     const [scope, setScope] = useState(null)
 
     useEffect(() => {
-      console.log('mount > setScope')
       setScope(Object.assign($injector.get('$rootScope').$new(true), { props: writable(props) }))
 
       return () => {
-        console.log('unmount')
         if (!scope) {
           return
         }
 
-        console.log('unmount > scope.destroy')
         scope.$destroy()
       }
     }, [])
 
     useEffect(() => {
-      console.log('props changed')
       if (!scope) {
         return
       }
-
-      console.log('props changed > setScope')
 
       setScope({ ...scope, props: writable(props) })
     }, [props])
